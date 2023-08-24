@@ -11,7 +11,11 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       Question.belongsTo(models['User'], {
-        as: 'author'
+        as: 'author',
+        foreignKey: {
+          name: 'authorId',
+          allowNull: false
+        }
       });
 
       Question.belongsToMany(models['User'], {

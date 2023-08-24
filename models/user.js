@@ -11,20 +11,22 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       User.hasMany(models['Question'], {
-        as: 'author',
         foreignKey: {
+          name: 'authorId',
           allowNull: false
         }
       });
 
       User.hasMany(models['Answer'], {
         foreignKey: {
+          name: 'authorId',
           allowNull: false
         }
       });
 
       User.hasMany(models['Comment'], {
         foreignKey: {
+          name: 'authorId',
           allowNull: false
         }
       });
