@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       Tag.belongsToMany(models['Question'], {
-        through: 'QuestionTag'
+        through: 'QuestionTags'
       });
     }
   }
