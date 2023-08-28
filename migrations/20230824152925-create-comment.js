@@ -31,7 +31,7 @@ module.exports = {
         },
         allowNull: false
       },
-      QuestionId: {
+      questionId: {
         type: Sequelize.DataTypes.INTEGER,
         references: {
           model: {

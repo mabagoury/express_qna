@@ -25,9 +25,20 @@ module.exports = (sequelize, DataTypes) => {
         through: 'CommentDownvoters'
       });
 
-      Comment.belongsTo(models['Question']);
+      Comment.belongsTo(models['Question'], {
+          foreignKey: {
+            // TODO: correct this foreign key in the database
+            name: 'QuestionId',
+            allowNull: false
+         }
+      });
 
-      Comment.belongsTo(models['Answer']);
+      Comment.belongsTo(models['Answer'],{
+        foreignKey: {
+          name: 'answerId',
+          allowNull: false
+        }
+      });
     }
   }
   Comment.init({

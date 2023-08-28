@@ -30,12 +30,14 @@ module.exports = (sequelize, DataTypes) => {
 
       Question.hasMany(models['Answer'], {
         foreignKey: {
+          name: 'questionId',
           allowNull: false
         }
       });
 
       Question.hasMany(models['Comment'], {
         foreignKey: {
+          name: 'QuestionId',
           allowNull: false
         }
       });

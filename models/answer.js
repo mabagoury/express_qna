@@ -25,10 +25,16 @@ module.exports = (sequelize, DataTypes) => {
         through: 'AnswerDownvoters'
       });
 
-      Answer.belongsTo(models['Question']);
+      Answer.belongsTo(models['Question'],{
+          foreignKey: {
+            name: 'questionId',
+            allowNull: false
+          }
+        });
 
       Answer.hasMany(models['Comment'], {
         foreignKey: {
+          name: 'answerId',
           allowNull: false
         }
       });
