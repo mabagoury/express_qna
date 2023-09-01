@@ -35,7 +35,7 @@ module.exports = (sequelize, DataTypes) => {
       Answer.hasMany(models['Comment'], {
         foreignKey: {
           name: 'answerId',
-          allowNull: false
+          allowNull: true
         }
       });
     }

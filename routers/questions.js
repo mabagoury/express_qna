@@ -99,10 +99,7 @@ questions.get('/:id/comment/add/',
             let comment = await db['Comment'].create({
                 name: data.content,
                 authorId: 1, // TODO: add sessions
-                QuestionId: data.id,
-                // TODO: change the foreign keys to allow NULL
-                //  then add a check constraint
-                answerId: 0
+                questionId: data.id
             });
             res.send({ id: comment.id });
         } else {

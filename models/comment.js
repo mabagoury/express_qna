@@ -27,16 +27,15 @@ module.exports = (sequelize, DataTypes) => {
 
       Comment.belongsTo(models['Question'], {
           foreignKey: {
-            // TODO: correct this foreign key in the database
-            name: 'QuestionId',
-            allowNull: false
+            name: 'questionId',
+            allowNull: true
          }
       });
 
       Comment.belongsTo(models['Answer'],{
         foreignKey: {
           name: 'answerId',
-          allowNull: false
+          allowNull: true
         }
       });
     }
