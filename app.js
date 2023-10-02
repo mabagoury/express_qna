@@ -10,6 +10,7 @@ const PORT = process.env.PORT || 8000;
 app.use(express.json());
 
 app.use('/question', questions);
+app.use('/answer', answers);
 app.listen(PORT, () => {
     console.log(`server is now listening at port ${PORT}...`);
 })

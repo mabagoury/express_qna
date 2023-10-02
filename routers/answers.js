@@ -15,9 +15,7 @@ answers.delete('/:id/delete/',
             let answersDeletedCount = await Answer.destroy({ where: { id: data.id}});
             answersDeletedCount ?
                 res.send({'id': data.id}) :
-                res.status(404).send({"error": "QUESTION_NOT_FOUND"});
-
-
+                res.status(404).send({"error": "ANSWER_NOT_FOUND"});
         } else {
             res.status(400).send({errors: result.array()});
         }
@@ -34,8 +32,8 @@ answers.get('/:id/comment/',
                 include: db['Comment']
             });
             answer ?
-                res.send(answer.Comments) : // TODO: returns both answerId and answerId. Fix this to send only a postId.
-                res.status(404).send({"error": "QUESTION_NOT_FOUND"});
+                res.send(answer.Comments) : // TODO: returns both questionId and answerId. Fix this to send only a postId.
+                res.status(404).send({"error": "ANSWER_NOT_FOUND"});
 
         } else {
             res.status(400).send({errors: result.array()});
@@ -58,7 +56,7 @@ answers.get('/:id/comment/add/',
                 });
                 res.send({ id: comment.id });
             } else {
-                res.status(404).send({"error": "QUESTION_NOT_FOUND"});
+                res.status(404).send({"error": "ANSWER_NOT_FOUND"});
             }
         } else {
             res.status(400).send({errors: result.array()});
@@ -75,13 +73,32 @@ answers.post('/:id/accept/',
             if(answer){
                 // TODO: Add sessions
                 let upvoter = await db['User'].findByPk(1);
-                // TODO: adding the same upvoter to the same answer is redundant in db.
-                //  While this is desired, why is it happening by default?
-                //  The Sequleize insert query is just a regular one.
-                await answer.addUpvoter(upvoter);
+                // TODO: Check the request is the answer author
+                await answer.update({ "is_accepted": true });
                 res.send({"id": answer.id});
             } else {
-                res.status(404).send({"error": "QUESTION_NOT_FOUND"});
+                res.status(404).send({"error": "ANSWER_NOT_FOUND"});
+            }
+        } else {
+            res.status(400).send({errors: result.array()});
+        }
+    });
+
+answers.post('/:id/accept/undo',
+    param('id').isInt({ gt: 0 }),
+    async (req, res) => {
+        let result = validationResult(req);
+        if(result.isEmpty()){
+            let data = matchedData(req);
+            let answer = await Answer.findByPk(data.id);
+            if(answer){
+                // TODO: Add sessions
+                let upvoter = await db['User'].findByPk(1);
+                // TODO: Check the request is the answer author
+                await answer.update({ "is_accepted": false });
+                res.send({"id": answer.id});
+            } else {
+                res.status(404).send({"error": "ANSWER_NOT_FOUND"});
             }
         } else {
             res.status(400).send({errors: result.array()});
@@ -101,10 +118,12 @@ answers.post('/:id/upvote/',
                 // TODO: adding the same upvoter to the same answer is redundant in db.
                 //  While this is desired, why is it happening by default?
                 //  The Sequleize insert query is just a regular one.
+                //  It looks like that Sequelize checks if a similar record exists in the join table first
+                //  as it executes a SELECT statement from the join table with the given keys before the insert
                 await answer.addUpvoter(upvoter);
                 res.send({"id": answer.id});
             } else {
-                res.status(404).send({"error": "QUESTION_NOT_FOUND"});
+                res.status(404).send({"error": "ANSWER_NOT_FOUND"});
             }
         } else {
             res.status(400).send({errors: result.array()});
@@ -126,7 +145,7 @@ answers.post('/:id/upvote/undo/',
                 await answer.removeUpvoter(upvoter);
                 res.send({"id": answer.id});
             } else {
-                res.status(404).send({"error": "QUESTION_NOT_FOUND"});
+                res.status(404).send({"error": "ANSWER_NOT_FOUND"});
             }
         } else {
             res.status(400).send({errors: result.array()});
@@ -146,7 +165,7 @@ answers.post('/:id/downvote/',
                 await answer.addDownvoter(downvoter);
                 res.send({"id": answer.id});
             } else {
-                res.status(404).send({"error": "QUESTION_NOT_FOUND"});
+                res.status(404).send({"error": "ANSWER_NOT_FOUND"});
             }
         } else {
             res.status(400).send({errors: result.array()});
@@ -166,7 +185,7 @@ answers.post('/:id/downvote/undo/',
                 await answer.removeDownvoter(downvoter);
                 res.send({"id": answer.id});
             } else {
-                res.status(404).send({"error": "QUESTION_NOT_FOUND"});
+                res.status(404).send({"error": "ANSWER_NOT_FOUND"});
             }
         } else {
             res.status(400).send({errors: result.array()});
