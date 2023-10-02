@@ -17,12 +17,16 @@ module.exports = (sequelize, DataTypes) => {
 
       Comment.belongsToMany(models['User'], {
         as: 'upvoters',
-        through: 'CommentUpvoters'
+        through: 'CommentUpvoters',
+        foreignKey: 'commentId',
+        otherKey: 'upvoterId'
       });
 
       Comment.belongsToMany(models['User'], {
         as: 'downvoters',
-        through: 'CommentDownvoters'
+        through: 'CommentDownvoters',
+        foreignKey: 'commentId',
+        otherKey: 'downvoterId'
       });
 
       Comment.belongsTo(models['Question'], {

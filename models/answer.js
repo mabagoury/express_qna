@@ -17,12 +17,16 @@ module.exports = (sequelize, DataTypes) => {
 
       Answer.belongsToMany(models['User'], {
         as: 'upvoters',
-        through: 'AnswerUpvoters'
+        through: 'AnswerUpvoters',
+        foreignKey: 'answerId',
+        otherKey: 'upvoterId'
       });
 
       Answer.belongsToMany(models['User'], {
         as: 'downvoters',
-        through: 'AnswerDownvoters'
+        through: 'AnswerDownvoters',
+        foreignKey: 'answerId',
+        otherKey: 'downvoterId'
       });
 
       Answer.belongsTo(models['Question'],{

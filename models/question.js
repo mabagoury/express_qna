@@ -20,12 +20,16 @@ module.exports = (sequelize, DataTypes) => {
 
       Question.belongsToMany(models['User'], {
         as: 'upvoters',
-        through: 'QuestionUpvoters'
+        through: 'QuestionUpvoters',
+        foreignKey: 'questionId',
+        otherKey: 'upvoterId'
       });
 
       Question.belongsToMany(models['User'], {
         as: 'downvoters',
-        through: 'QuestionDownvoters'
+        through: 'QuestionDownvoters',
+        foreignKey: 'questionId',
+        otherKey: 'downvoterId'
       });
 
       Question.hasMany(models['Answer'], {
@@ -43,7 +47,9 @@ module.exports = (sequelize, DataTypes) => {
       });
 
       Question.belongsToMany(models['Tag'], {
-        through: 'QuestionTag'
+        through: 'QuestionTag',
+        foreignKey: 'questionId',
+        otherKey: 'tagId'
       });
     }
   }

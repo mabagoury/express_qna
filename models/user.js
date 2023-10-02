@@ -34,31 +34,43 @@ module.exports = (sequelize, DataTypes) => {
       User.belongsToMany(models['Question'], {
         as: 'QuestionUpvotes',
         through: 'QuestionUpvoter',
+        foreignKey: 'upvoterId',
+        otherKey: 'questionId'
       });
 
       User.belongsToMany(models['Answer'], {
         as: 'AnswerUpvotes',
         through: 'AnswerUpvoter',
+        foreignKey: 'upvoterId',
+        otherKey: 'answerId'
       });
 
       User.belongsToMany(models['Comment'], {
         as: 'CommentUpvotes',
         through: 'CommentUpvoter',
+        foreignKey: 'upvoterId',
+        otherKey: 'commentId'
       });
 
       User.belongsToMany(models['Question'], {
         as: 'QuestionDownvotes',
         through: 'QuestionDownvoter',
+        foreignKey: 'downvoterId',
+        otherKey: 'questionId'
       });
 
       User.belongsToMany(models['Answer'], {
         as: 'AnswerDownvotes',
         through: 'AnswerDownvoter',
+        foreignKey: 'downvoterId',
+        otherKey: 'answerId'
       });
 
       User.belongsToMany(models['Comment'], {
         as: 'CommentDownvotes',
         through: 'CommentDownvoter',
+        foreignKey: 'downvoterId',
+        otherKey: 'commentId'
       });
     }
   }
